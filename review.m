@@ -23,6 +23,12 @@ function varargout = review(varargin)
 % Edit the above text to modify the response to help review
 
 % Last Modified by GUIDE v2.5 17-Aug-2018 15:39:12
+%--------------------------------------------------------------------------
+% To Do
+
+%   - Add "Links to" feature
+%   - Remove items from "Remaining List" once completed
+%--------------------------------------------------------------------------
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -128,11 +134,30 @@ function comp_list_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-y = make_array(100)
-y
-oldstr = get(hObject,'String')
-set(hObject,'String',y)
-    
+
+% --- Executes on selection change in rem_list.
+function rem_list_Callback(hObject, eventdata, handles)
+% hObject    handle to comp_list (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns comp_list contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from comp_list
+
+
+% --- Executes during object creation, after setting all properties.
+function rem_list_CreateFcn(hObject, eventdata, handles)
+
+% hObject    handle to comp_list (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
 
 
 % --- Executes on button press in add_to_list.
@@ -146,6 +171,7 @@ function add_to_list_Callback(hObject, eventdata, handles)
     num = str2double(branch)
 %     n_complete = str2double(get(handles.n_complete,'String'))
     y = get(handles.comp_list,'String')
+    z = get(handles.rem_list,'String')
     i = 1;
     while i<length(y)
         if strcmp(y(i),'-')
@@ -165,9 +191,11 @@ function add_to_list_Callback(hObject, eventdata, handles)
     else
         y(i) = branch
     end
+    z = remove_from(z,branch);
+   
     set(handles.comp_list,'String',y)
-
-
+    set(handles.rem_list,'String',z)
+    
 function initial_Callback(hObject, eventdata, handles)
 % hObject    handle to initial (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -195,8 +223,15 @@ function init_Callback(hObject, eventdata, handles)
 % hObject    handle to init (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+    total = str2double(get(handles.initial,'String'))
     set(handles.n_rem,'String',get(handles.initial,'String'))
     set(handles.n_complete,'String',0)
+    z = gen_list(total);
+    set(handles.rem_list,'String',z)
+    y = make_array(total)
+    y
+    oldstr = get(handles.comp_list,'String')
+    set(handles.comp_list,'String',y)
     WinOnTop();
     
     
