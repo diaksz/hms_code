@@ -22,7 +22,7 @@ function varargout = review(varargin)
 
 % Edit the above text to modify the response to help review
 
-% Last Modified by GUIDE v2.5 17-Aug-2018 15:39:12
+% Last Modified by GUIDE v2.5 18-Aug-2018 18:36:06
 %--------------------------------------------------------------------------
 % To Do
 
@@ -227,11 +227,11 @@ function init_Callback(hObject, eventdata, handles)
     set(handles.n_rem,'String',get(handles.initial,'String'))
     set(handles.n_complete,'String',0)
     z = gen_list(total);
-    set(handles.rem_list,'String',z)
     y = make_array(total)
     y
-    oldstr = get(handles.comp_list,'String')
     set(handles.comp_list,'String',y)
+    set(handles.rem_list,'String',z)
+    set(handles.link_list,'String',y)
     WinOnTop();
     
     
@@ -263,6 +263,89 @@ function check_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function check_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to check (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in link_list.
+function link_list_Callback(hObject, eventdata, handles)
+% hObject    handle to link_list (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns link_list contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from link_list
+    
+
+% --- Executes during object creation, after setting all properties.
+function link_list_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to link_list (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in link.
+function link_Callback(hObject, eventdata, handles)
+% hObject    handle to link (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    x = get(handles.link_list,'String')
+    branch = get(handles.branch_link,'String')
+    branch_num = str2double(branch);
+    len = length(x);
+    edge = length(branch);
+    for i=1:len 
+        if strcmp('-',x(i))
+            x(i,1:edge) = branch;
+            break
+        end
+    end
+    set(handles.link_list,'String',x)
+    
+    
+    
+    
+
+
+% --- Executes on button press in clear.
+function clear_Callback(hObject, eventdata, handles)
+% hObject    handle to clear (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    len = length(get(handles.link_list,'String'));
+    x = make_array(len);
+    set(handles.link_list,'String',x)
+    
+    
+    
+    
+
+
+
+function branch_link_Callback(hObject, eventdata, handles)
+% hObject    handle to branch_link (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of branch_link as text
+%        str2double(get(hObject,'String')) returns contents of branch_link as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function branch_link_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to branch_link (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
