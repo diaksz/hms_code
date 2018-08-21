@@ -1,0 +1,47 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>I hate javascript</title>
+</head>
+  <body>
+        <canvas id = "canvas"></canvas>
+        <script> 
+		// Set canvas and barcode to read
+                var canvas = document.getElementById('canvas');
+                var ctx = canvas.getContext('2d');
+		ctx.canvas.width = 1500; // Get these from the dimensions of the tapecamera node
+		ctx.canvas.height = 1500;
+                var barcode = 'nnnnnnnnWWWWnnnnnnWWWWnnnnWWnnnWWnWnn';
+		// Set dimensions of where to draw the barcode		
+		var center_x = 800;
+		var center_y = 500;		
+		var height = 500;
+		var narrow = (5*height)/315;
+		var wide = 3*narrow;	
+		var current_y = center_y - height/2; // Here, set the initial offset from top of the screen
+		// Stuff for Loop		
+		ctx.fillStyle = 'black';
+		var bcl = barcode.length;
+		// Draw Barcode   
+		for (var i = bcl - 1; i >= 0; i--)
+			{if (i % 2 == 0 && barcode[i] == "n")
+				{ctx.fillRect(center_x -50,current_y,100,narrow);
+				current_y += narrow; 
+				}
+			else if (i % 2 == 0 && barcode[i] == "W")
+				{ctx.fillRect(center_x -50,current_y,100,wide);
+					current_y+=wide;
+				}
+			else if (i % 2 == 1 && barcode[i] == "n")
+				{current_y += narrow;
+				}
+			else if (i % 2 == 1 && barcode[i] == "W")
+				{current_y+=wide;
+				}
+			else {document.write('You suck at indexing');}
+			}  
+		
+        </script>
+
+</body>
+</html>
