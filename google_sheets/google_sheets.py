@@ -60,4 +60,25 @@ def read_cell_value(Id,Sheet,start,end):
     result = sheet.values().get(spreadsheetId=Id,range=Range).execute()
     values = result.get('values',[])
     return values
+def get_rgb(Id,Range,offset):
+    data = service.spreadsheets().get(spreadsheetId=Id,
+                                   ranges=Range,
+                                   includeGridData=True
+                                 ).execute()
+    sections = data['sheets'][0]['data'][0]['rowData']
+    rgblst = []
+    for i in range(0,len(sections)):
+        y = i + offset
+        x = sections[i]['values'][0]['effectiveFormat']['backgroundColor']
+        
+        if x == {u'red': 1}:
+            x = "Bad"
+        elif x == {u'blue': 0.65882355, u'green': 0.84313726, u'red': 0.7137255}:
+            x = "Done"
+        elif x == {u'blue': 1, u'green': 1,u'red': 1}:
+            x = 'Skip/blown/to do'
+        elif x == {u'blue': 0.827451, u'green': 0.91764706, u'red': 0.8509804}:
+            x = 'Running'
+        rgblst.append((y,x))
+    return rgblst
 
